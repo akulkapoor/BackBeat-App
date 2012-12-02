@@ -129,6 +129,7 @@ var name;
 	//Link Clicks
 	$('.link').live("click",function(){
 		$('#bandInfo').html('')
+		var likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
 
 		var big = $(this.innerHTML).attr("data-big");
 		$('#Band').css("background-image","url(" + big + ")");
@@ -140,11 +141,14 @@ var name;
 		$('#Band').css("-o-background-size", "cover");
 		var band = $(this.innerHTML).attr("band");
 		$('#bandInfo').append(band);
+		$('#bandInfo').append(likeButton);
+		likeButton.button();
 		$('#bandInfo').append(player);
+
 		getSong(band);
 		var object = $(this.innerHTML);
 		setInfo(object,band);
-
+		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
 		$('#Bio').css("background-image","url(" + big + ")");
 		$('#Bio').css("background-size", "cover");
 		$('#Bio').css("background-position", "center");
@@ -154,11 +158,13 @@ var name;
 		$('#Bio').css("-o-background-size", "cover");
 		$('#bioInfo').empty();
 		$('#bioInfo').append(band);
+		$('#bioInfo').append(likeButton);
+		likeButton.button();
 		getSong(band);
 		var object = $(this.innerHTML);
 		setInfo(object,band,"#bioInfo");
 
-
+		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
 		$('#Links').css("background-image","url(" + big + ")");
 		$('#Links').css("background-size", "cover");
 		$('#Links').css("background-position", "center");
@@ -168,6 +174,8 @@ var name;
 		$('#Links').css("-o-background-size", "cover");
 		$('#linkInfo').empty();
 		$('#linkInfo').append(band);
+		$('#linkInfo').append(likeButton);
+		likeButton.button();
 		getSong(band);
 		var object = $(this.innerHTML);
 		//setInfo(object,band);
@@ -181,7 +189,7 @@ var name;
 			$('#linkInfo').append("<div id = page><a href='" + link + 
 				"'>" + "Last FM Page" + "</a>" + "</div>");
 		}
-
+		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
 		$('#Tickets').css("background-image","url(" + big + ")");
 		$('#Tickets').css("background-size", "cover");
 		$('#Tickets').css("background-position", "center");
@@ -191,12 +199,25 @@ var name;
 		$('#Tickets').css("-o-background-size", "cover");
 		$('#ticketInfo').empty();
 		$('#ticketInfo').append(band);
+		$('#ticketInfo').append(likeButton);
+		likeButton.button();
 		getSong(band);
 		var object = $(this.innerHTML);
 		//setInfo(object,band);
 	});
 
 
+liked = function(){
+	if ($(".likeButton").val()==="Like") {
+		$(".likeButton").val("Liked!");
+		$(".likeButton").button("refresh");
+	}
+	else {
+		$(".likeButton").val("Like");
+		$(".likeButton").button("refresh");
+	}
+
+}
 
 //Sets the info of the artist in the picture div
 setInfo = function(object,band,container) {
