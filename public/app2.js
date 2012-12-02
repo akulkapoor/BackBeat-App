@@ -69,8 +69,86 @@ var name;
 	//Picture Clicks
 	$('.content img').live("click",function(){
 
-		$('#picture').html('')
 		
+
+		$('#bandInfo').html('')
+
+		var likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
+		var big = $(this).attr("data-big");
+		$('#Band').css("background-image","url(" + big + ")");
+		$('#Band').css("background-size", "cover");
+		$('#Band').css("background-position", "center");
+		$('#Band').css("-webkit-background-size", "cover");
+		$('#Band').css("-moz-background-size", "cover");
+		$('#Band').css("-o-background-size", "cover");
+		$('#Band').css("-o-background-size", "cover");
+		var band = $(this).attr("band");
+		$('#bandInfo').append(band);
+		$('#bandInfo').append(likeButton);
+		likeButton.button();
+		$('#bandInfo').append(player);
+		getSong(band);
+		var object = $(this);
+		setInfo(object,band);
+
+		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
+		$('#Bio').css("background-image","url(" + big + ")");
+		$('#Bio').css("background-size", "cover");
+		$('#Bio').css("background-position", "center");
+		$('#Bio').css("-webkit-background-size", "cover");
+		$('#Bio').css("-moz-background-size", "cover");
+		$('#Bio').css("-o-background-size", "cover");
+		$('#Bio').css("-o-background-size", "cover");
+		$('#bioInfo').empty();
+		$('#bioInfo').append(band);
+		$('#bioInfo').append(likeButton);
+		likeButton.button();
+		getSong(band);
+		var object = $(this);
+		setInfo(object,band,"#bioInfo");
+
+		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
+		$('#Links').css("background-image","url(" + big + ")");
+		$('#Links').css("background-size", "cover");
+		$('#Links').css("background-position", "center");
+		$('#Links').css("-webkit-background-size", "cover");
+		$('#Links').css("-moz-background-size", "cover");
+		$('#Links').css("-o-background-size", "cover");
+		$('#Links').css("-o-background-size", "cover");
+		$('#linkInfo').empty();
+		$('#linkInfo').append(band);
+		$('#linkInfo').append(likeButton);
+		likeButton.button();
+		getSong(band);
+		var object = $(this);
+		//setInfo(object,band);
+
+		var link = $(this).attr("link");
+		if (link.slice(0,7) !== "http://") {
+			$('#linkInfo').append("<div id = page><a href='http://" + link + 
+				"'>" + "Last FM Page" + "</a>" + "</div>");
+		}
+		else {
+			$('#linkInfo').append("<div id = page><a href='" + link + 
+				"'>" + "Last FM Page" + "</a>" + "</div>");
+		}
+		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
+		$('#Tickets').css("background-image","url(" + big + ")");
+		$('#Tickets').css("background-size", "cover");
+		$('#Tickets').css("background-position", "center");
+		$('#Tickets').css("-webkit-background-size", "cover");
+		$('#Tickets').css("-moz-background-size", "cover");
+		$('#Tickets').css("-o-background-size", "cover");
+		$('#Tickets').css("-o-background-size", "cover");
+		$('#ticketInfo').empty();
+		$('#ticketInfo').append(band);
+		$('#ticketInfo').append(likeButton);
+		likeButton.button();
+		getSong(band);
+		var object = $(this);
+
+
+/*		
 		var big = $(this).attr("data-big");
 		var band = $(this).attr("band");
 		name = $(this).attr("band");
@@ -97,6 +175,8 @@ var name;
 		$('#bigPic').attr("src", big);
 		$("#picture").attr('class', 'show');
 		getSong(band);
+		
+
 		$("#bigPic").load(function() {
 
 		var endLeft = $("#bigPic").offset().left;
@@ -121,7 +201,7 @@ var name;
 		$("#bigPic").css("opacity",1);
 		$('#transitionPic').remove();
 		});
-		});
+		});*/
 
 	});
 
@@ -144,10 +224,10 @@ var name;
 		$('#bandInfo').append(likeButton);
 		likeButton.button();
 		$('#bandInfo').append(player);
-
 		getSong(band);
 		var object = $(this.innerHTML);
 		setInfo(object,band);
+		
 		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
 		$('#Bio').css("background-image","url(" + big + ")");
 		$('#Bio').css("background-size", "cover");
@@ -370,14 +450,22 @@ if ($("#locationSearch").val() !== "") {
 			artist.className = "artist";
 			artist.id = item.artists.artist;
 
-			var img = document.createElement("div");
-			img.className = "img";
-			img.innerHTML = "<img src='" + item.image[2]["#text"] + 
-			"' data-big=" + item.image[2]["#text"] + " band='" + 
-			item.artists.artist + "' city='" + item.venue.location.city + 
-			"'" + " country='" + item.venue.location.country + "'" + 
-			" theatre='" + item.venue.name + "' link='" + item.url + 
-			"' date='" + item.startDate + "'>"
+			var img = $("<div>");
+			img.addClass("img");
+			var imgTag = $("<img>");
+			imgTag.attr("src",item.image[2]["#text"]);
+			imgTag.attr("data-big",item.image[2]["#text"]);
+			imgTag.attr("band", item.name);
+			imgTag.attr("link",item.url); 
+			imgTag.attr("city",item.venue.location.city); 
+			imgTag.attr("country",item.venue.location.country);
+			imgTag.attr("theatre",item.venue.name);
+			imgTag.attr("date",item.startDate);
+			var picLink = $("<a>");
+			picLink.attr("href","#Band");
+			picLink.append(imgTag);
+			img.append(picLink);
+
 
 
 
@@ -400,7 +488,7 @@ if ($("#locationSearch").val() !== "") {
 			"' date='" + item.startDate + "'>" + item.artists.artist 
 			+ "</div>";
 			artist.appendChild(link);
-			artist.appendChild(img);
+			$(artist).append(img);
 			artist.innerHTML += "<br>"
 						
 			$("#shows").append(artist)
@@ -437,11 +525,19 @@ var data1;
 					artist.className = "artist";
 					artist.id = item.name;
 
-					var img = document.createElement("div");
-					img.className = "img";
-					img.innerHTML = "<img src=" + item.image[2]["#text"] + 
-					" data-big=" + item.image[4]["#text"] + " band='" + 
-					item.name + "' link='" +item.url +"'>"
+					var img = $("<div>");
+					img.addClass("img");
+					var imgTag = $("<img>");
+					imgTag.attr("src",item.image[2]["#text"]);
+					imgTag.attr("data-big",item.image[4]["#text"]);
+					imgTag.attr("band", item.name);
+					imgTag.attr("link",item.url); 
+					var picLink = $("<a>");
+					picLink.attr("href","#Band");
+					picLink.append(imgTag);
+					img.append(picLink);
+
+
 
 					var link = document.createElement("div");
 					link.className = "link";
@@ -449,7 +545,7 @@ var data1;
 					item.image[4]["#text"] + " band='" + item.name + "' link='"
 					 +item.url + "' href='#Band'>" + item.name + "</div>";
 					artist.appendChild(link);
-					artist.appendChild(img);
+					$(artist).append(img);
 					artist.innerHTML += "<br>"
 						
 					$("#similarArtists").append(artist)
@@ -502,11 +598,18 @@ var data2;
 						artist.className = "artist";
 						artist.id = item.name;
 
-						var img = document.createElement("div");
-						img.className = "img";
-						img.innerHTML = "<img src=" + item.image[2]["#text"] + 
-						" data-big=" + item.image[4]["#text"] + " band='" + 
-						item.name + "' link='" +item.url +"'>"
+					var img = $("<div>");
+					img.addClass("img");
+					var imgTag = $("<img>");
+					imgTag.attr("src",item.image[2]["#text"]);
+					imgTag.attr("data-big",item.image[4]["#text"]);
+					imgTag.attr("band", item.name);
+					imgTag.attr("link",item.url); 
+					var picLink = $("<a>");
+					picLink.attr("href","#Band");
+					picLink.append(imgTag);
+					img.append(picLink);
+
 
 						var link = document.createElement("div");
 						link.className = "link";
@@ -516,7 +619,7 @@ var data2;
 						item.name + "</div>";
 
 						artist.appendChild(link);
-						artist.appendChild(img);
+						$(artist).append(img);
 						artist.innerHTML += "<br>"
 						
 						$("#similarLocalArtists").append($(artist))
