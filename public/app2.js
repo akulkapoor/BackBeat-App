@@ -277,7 +277,7 @@ getSong = function(name){
 	}
 	$.ajax({
 		url: 'http://hkr.me:8001/?url=' + 
-		encodeURIComponent('http://developer.echonest.com/api/v4/song/search?api_key=N6E4NIOVYMTHNDM8J&format=json&results=5&artist=' + 
+		encodeURIComponent('http://developer.echonest.com/api/v4/song/search?api_key=JGTFZFCZNOZDOWFED&format=json&results=5&artist=' + 
 			name + '&bucket=id:7digital-US&bucket=audio_summary&bucket=tracks') 
 		+ "&jsonp=?",
 		dataType: "json",
