@@ -8,13 +8,15 @@ a:visited {
 	color: black;
 }
 
-#picture a:link {
-	font-size: 10px;
+#linkInfo a:link {
+	font-size: 20px;
 }
 
-#picture #page {
-	font-size: 10px;
+#linkInfo #page {
+
+	font-size: 20px;
 	text-decoration: underline;
+	margin-top: 10%;
 }
 
 .blackBox {
@@ -29,6 +31,17 @@ a:visited {
 	margin-right: 2%;
 	font: 25px "Lucida Grande"; 
 	
+}
+
+.info {
+	text-transform: none;
+	width: 90%;
+	margin-left: 5%;
+	margin-right: 5%;
+	font-size: 12px;
+	-webkit-overflow-scrolling: touch;
+	-moz-overflow-scrolling: touch;
+	-o-overflow-scrolling: touch;
 }
 
 body{
@@ -116,16 +129,6 @@ img:active {
 	top: 2px;
 }
 
-.info {
-	text-transform: none;
-	width: 90%;
-	margin-left: 5%;
-	margin-right: 5%;
-	font-size: 12px;
-	-webkit-overflow-scrolling: touch;
-	-moz-overflow-scrolling: touch;
-	-o-overflow-scrolling: touch;
-}
 
 /*
 .info #head{

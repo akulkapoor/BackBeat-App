@@ -172,6 +172,16 @@ var name;
 		var object = $(this.innerHTML);
 		//setInfo(object,band);
 
+		var link = $(this.innerHTML).attr("link");
+		if (link.slice(0,7) !== "http://") {
+			$('#linkInfo').append("<div id = page><a href='http://" + link + 
+				"'>" + "Last FM Page" + "</a>" + "</div>");
+		}
+		else {
+			$('#linkInfo').append("<div id = page><a href='" + link + 
+				"'>" + "Last FM Page" + "</a>" + "</div>");
+		}
+
 		$('#Tickets').css("background-image","url(" + big + ")");
 		$('#Tickets').css("background-size", "cover");
 		$('#Tickets').css("background-position", "center");
