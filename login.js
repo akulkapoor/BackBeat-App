@@ -54,6 +54,20 @@ passport.use(new FacebookStrategy({
       });
     })); 
 
+function serveStaticFile(request, response) {
+    //notify the user they're logged in. Necessary because
+    //  we use the same html for logging in and when they're
+    //  logged in
+    if (request.user !== undefined){
+      console.log("not undefined!")
+        response.sendfile(__dirname + "/index.html");
+    }
+    else {
+      console.log("undefined!")
+        response.redirect("/");
+    }
+}
+
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
@@ -73,6 +87,7 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 app.get('/', routes.index);
+app.get('/index.html', serveStaticFile);
 app.get('/fbauth', passport.authenticate('facebook',{scope: 'email'}))
 app.get('/fbauthed', passport.authenticate('facebook',{failureRedirect:'/',successRedirect:'/index.html'}))
 app.get('/logout',function(req,res) {
