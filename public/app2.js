@@ -256,12 +256,7 @@ bandLike = function(data) {
 		getSong(band);
 		var object = $(this.innerHTML);
 		setInfo(object,band);
-<<<<<<< HEAD
-		
-		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
-=======
-		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton"  type="button">');
->>>>>>> mongodb!
+
 		$('#Bio').css("background-image","url(" + big + ")");
 		$('#Bio').css("background-size", "cover");
 		$('#Bio').css("background-position", "center");
