@@ -1,25 +1,23 @@
 a {
 	font-weight: bold;
 	text-transform: uppercase;
-	color: black;
+	color: white;
 }
 
-a:visited {
-	color: black;
+#linkInfo a:link {
+	font-size: 20px;
 }
 
-#picture a:link {
-	font-size: 10px;
-}
+#linkInfo #page {
 
-#picture #page {
-	font-size: 10px;
+	font-size: 20px;
 	text-decoration: underline;
+	margin-top: 10%;
 }
 
 .blackBox {
 	background-color: black;
-	opacity: 0.8;
+	opacity: 0.6;
 	height: 70%;
 	bottom: 0px;
 	width: 96%;
@@ -29,6 +27,24 @@ a:visited {
 	margin-right: 2%;
 	font: 25px "Lucida Grande"; 
 	
+}
+
+.info {
+	text-transform: none;
+	width: 90%;
+	margin-left: 5%;
+	margin-right: 5%;
+	font-size: 12px;
+	-webkit-overflow-scrolling: touch;
+	-moz-overflow-scrolling: touch;
+	-o-overflow-scrolling: touch;
+}
+
+.likeButton {
+	font: 24px "Lucida Grande"; 
+	color: white;
+	
+
 }
 
 body{
@@ -116,12 +132,6 @@ img:active {
 	top: 2px;
 }
 
-.info {
-	text-transform: none;
-	width: 90%;
-	margin-left: 5%;
-	margin-right: 5%;
-}
 
 /*
 .info #head{
@@ -169,10 +179,6 @@ img:active {
 	margin-left: auto;
 	margin-right: auto;
 	padding-top: 20px;
-}
-
-.info {
-	margin-top: -20px;
 }
 
 #myCanvas {

@@ -3,8 +3,8 @@ module.exports = {
 		fb: {
 			appID: "467664373275243",
 			appSecret: "d9188d59b654d87746ae463c15d7cf66",
-			url: "http://128.237.150.95:3000/"
+			url: "http://128.237.136.195:3000/"
 		},
-		dbUrl: "mongodb://128.237.150.95/abc"	
+		dbUrl: "mongodb://128.237.136.195/abc"	
 	}
 }

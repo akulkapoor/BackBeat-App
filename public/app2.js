@@ -57,6 +57,17 @@ text.y = 20;
 text.xVel = 0;
 text.yVel = 0;
 var name;
+var bandExists;
+
+bandLike = function(data) {
+	if(data==="1") {
+		alert("band exists!");
+		bandExists = true;
+	}
+	else {
+		bandExists = false;
+	}
+}
 
 	var info = document.createElement("div");
 	info.setAttribute("id","info");
@@ -209,7 +220,6 @@ var name;
 	//Link Clicks
 	$('.link').live("click",function(){
 		$('#bandInfo').html('')
-		var likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
 
 		var big = $(this.innerHTML).attr("data-big");
 		$('#Band').css("background-image","url(" + big + ")");
@@ -220,15 +230,38 @@ var name;
 		$('#Band').css("-o-background-size", "cover");
 		$('#Band').css("-o-background-size", "cover");
 		var band = $(this.innerHTML).attr("band");
-		$('#bandInfo').append(band);
+		$.ajax({
+    		url:"/bbb",
+    		data: JSON.stringify({'name':band}),
+    		type: "POST",
+    		success: bandLike,
+    		async: false,
+    		contentType: "application/json",
+    		error: function(jqXHR, textStatus, errorThrown) {
+        		console.log(jqXHR.status);
+        		console.log(textStatus);
+        		console.log(errorThrown);
+    		}
+		})
+		if (bandExists) {
+			var likeButton = $('<input type="button" value="Liked!" onclick="liked();" class="likeButton" type="button">');
+		}
+		else{
+			var likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton" type="button">');
+		}
+		$('#bandInfo').append("<div id = bandName>" + band + "</div>");
 		$('#bandInfo').append(likeButton);
 		likeButton.button();
 		$('#bandInfo').append(player);
 		getSong(band);
 		var object = $(this.innerHTML);
 		setInfo(object,band);
+<<<<<<< HEAD
 		
 		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
+=======
+		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton"  type="button">');
+>>>>>>> mongodb!
 		$('#Bio').css("background-image","url(" + big + ")");
 		$('#Bio').css("background-size", "cover");
 		$('#Bio').css("background-position", "center");
@@ -237,14 +270,14 @@ var name;
 		$('#Bio').css("-o-background-size", "cover");
 		$('#Bio').css("-o-background-size", "cover");
 		$('#bioInfo').empty();
-		$('#bioInfo').append(band);
+		$('#bioInfo').append("<div id = bandName>" + band + "</div>");
 		$('#bioInfo').append(likeButton);
 		likeButton.button();
 		getSong(band);
 		var object = $(this.innerHTML);
 		setInfo(object,band,"#bioInfo");
 
-		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
+		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton" type="button">');
 		$('#Links').css("background-image","url(" + big + ")");
 		$('#Links').css("background-size", "cover");
 		$('#Links').css("background-position", "center");
@@ -253,7 +286,7 @@ var name;
 		$('#Links').css("-o-background-size", "cover");
 		$('#Links').css("-o-background-size", "cover");
 		$('#linkInfo').empty();
-		$('#linkInfo').append(band);
+		$('#linkInfo').append("<div id = bandName>" + band + "</div>");
 		$('#linkInfo').append(likeButton);
 		likeButton.button();
 		getSong(band);
@@ -269,7 +302,7 @@ var name;
 			$('#linkInfo').append("<div id = page><a href='" + link + 
 				"'>" + "Last FM Page" + "</a>" + "</div>");
 		}
-		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
+		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton" type="button">');
 		$('#Tickets').css("background-image","url(" + big + ")");
 		$('#Tickets').css("background-size", "cover");
 		$('#Tickets').css("background-position", "center");
@@ -278,7 +311,7 @@ var name;
 		$('#Tickets').css("-o-background-size", "cover");
 		$('#Tickets').css("-o-background-size", "cover");
 		$('#ticketInfo').empty();
-		$('#ticketInfo').append(band);
+		$('#ticketInfo').append("<div id = bandName>" + band + "</div>");
 		$('#ticketInfo').append(likeButton);
 		likeButton.button();
 		getSong(band);
@@ -286,8 +319,25 @@ var name;
 		//setInfo(object,band);
 	});
 
-
 liked = function(){
+
+	awesome = function() {
+		console.log("we did it!")
+	}
+	
+	$.ajax({
+    url:"/aaa",
+    data: JSON.stringify({'name':$("#bandName").html()}),
+    type: "POST",
+    success: awesome,
+    contentType: "application/json",
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR.status);
+        console.log(textStatus);
+        console.log(errorThrown);
+    	}
+	})
+
 	if ($(".likeButton").val()==="Like") {
 		$(".likeButton").val("Liked!");
 		$(".likeButton").button("refresh");
@@ -487,6 +537,9 @@ if ($("#locationSearch").val() !== "") {
 			" theatre='" + item.venue.name+ "' link='" + item.url + 
 			"' date='" + item.startDate + "'>" + item.artists.artist 
 			+ "</div>";
+			var css = document.createElement("div");
+			css.className = "space";
+			artist.appendChild(css);
 			artist.appendChild(link);
 			$(artist).append(img);
 			artist.innerHTML += "<br>"
@@ -544,6 +597,9 @@ var data1;
 					link.innerHTML = "<a id='" + item.name  + "' data-big=" + 
 					item.image[4]["#text"] + " band='" + item.name + "' link='"
 					 +item.url + "' href='#Band'>" + item.name + "</div>";
+					var css = document.createElement("div");
+					css.className = "space";
+					artist.appendChild(css);
 					artist.appendChild(link);
 					$(artist).append(img);
 					artist.innerHTML += "<br>"
@@ -618,6 +674,9 @@ var data2;
 						" band='" + item.name + "' link='" +item.url + "'>" + 
 						item.name + "</div>";
 
+						var css = document.createElement("div");
+						css.className = "space";
+						artist.appendChild(css);
 						artist.appendChild(link);
 						$(artist).append(img);
 						artist.innerHTML += "<br>"

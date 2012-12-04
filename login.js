@@ -6,7 +6,9 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , connect = require('connect')
+  , mongoose = require('mongoose');
 var app = express();
 var config = require("./config");
 
@@ -36,6 +38,7 @@ passport.use(new FacebookStrategy({
         query.exec(function(err, oldUser) {
           if (oldUser) {
             console.log('Existing User: ' + oldUser.name + ' found and logged in!')
+            console.log(oldUser.bands)
             done(null,oldUser)
           }
           else {
@@ -72,13 +75,13 @@ app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
+  app.use(express.bodyParser());
   app.use(express.favicon());
   app.use(express.logger('dev'));
   app.use(express.cookieParser());
   app.use(express.session({secret: 'fasfasasasfasfa'}));
   app.use(passport.initialize());
-  app.use(passport.session())
-  app.use(express.bodyParser());
+  app.use(passport.session());
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
@@ -86,16 +89,43 @@ app.configure(function(){
 app.configure('development', function(){
   app.use(express.errorHandler());
 });
-app.get('/', routes.index);
+app.post('/aaa', function (req,res) {
+  if (req.user !== undefined) {
+    console.log(req.body);
+    var data = req.body.name;
+    if (req.user.bands.indexOf(data) === -1) {
+      req.user.bands.push(data);
+      console.log(req.user.bands);
+      req.user.save();
+    }
+    else {
+      req.user.bands.splice(req.user.bands.indexOf(data),1);
+      console.log("removed!")
+      console.log(req.user.bands)
+    }
+    res.end("success!")
+  }
+})
+
+app.post('/bbb', function (req,res) {
+  if (req.user !== undefined) {
+    var data = req.body.name;
+    if (req.user.bands.indexOf(data) !== -1) {
+      res.end("1");
+    }
+    else {
+      res.end("0");
+    }
+  }
+})
+
+app.get('/', function(req,res) { res.redirect('fbauth')});
 app.get('/index.html', serveStaticFile);
-app.get('/fbauth', passport.authenticate('facebook',{scope: 'email'}))
+app.get('/fbauth', passport.authenticate('facebook'))
 app.get('/fbauthed', passport.authenticate('facebook',{failureRedirect:'/',successRedirect:'/index.html'}))
 app.get('/logout',function(req,res) {
     req.logOut();
     res.redirect('/');
 })
 app.get('/users', user.list);
-
-http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
-});
+app.listen(3000);

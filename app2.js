@@ -129,6 +129,7 @@ var name;
 	//Link Clicks
 	$('.link').live("click",function(){
 		$('#bandInfo').html('')
+		var likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
 
 		var big = $(this.innerHTML).attr("data-big");
 		$('#Band').css("background-image","url(" + big + ")");
@@ -139,12 +140,15 @@ var name;
 		$('#Band').css("-o-background-size", "cover");
 		$('#Band').css("-o-background-size", "cover");
 		var band = $(this.innerHTML).attr("band");
-		$('#bandInfo').append(band);
+		$('#bandInfo').append("<div id = bandName>" + band + "</div>");
+		$('#bandInfo').append(likeButton);
+		likeButton.button();
 		$('#bandInfo').append(player);
+
 		getSong(band);
 		var object = $(this.innerHTML);
 		setInfo(object,band);
-
+		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
 		$('#Bio').css("background-image","url(" + big + ")");
 		$('#Bio').css("background-size", "cover");
 		$('#Bio').css("background-position", "center");
@@ -153,12 +157,14 @@ var name;
 		$('#Bio').css("-o-background-size", "cover");
 		$('#Bio').css("-o-background-size", "cover");
 		$('#bioInfo').empty();
-		$('#bioInfo').append(band);
+		$('#bioInfo').append("<div id = bandName>" + band + "</div>");
+		$('#bioInfo').append(likeButton);
+		likeButton.button();
 		getSong(band);
 		var object = $(this.innerHTML);
 		setInfo(object,band,"#bioInfo");
 
-
+		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
 		$('#Links').css("background-image","url(" + big + ")");
 		$('#Links').css("background-size", "cover");
 		$('#Links').css("background-position", "center");
@@ -167,11 +173,23 @@ var name;
 		$('#Links').css("-o-background-size", "cover");
 		$('#Links').css("-o-background-size", "cover");
 		$('#linkInfo').empty();
-		$('#linkInfo').append(band);
+		$('#linkInfo').append("<div id = bandName>" + band + "</div>");
+		$('#linkInfo').append(likeButton);
+		likeButton.button();
 		getSong(band);
 		var object = $(this.innerHTML);
 		//setInfo(object,band);
 
+		var link = $(this.innerHTML).attr("link");
+		if (link.slice(0,7) !== "http://") {
+			$('#linkInfo').append("<div id = page><a href='http://" + link + 
+				"'>" + "Last FM Page" + "</a>" + "</div>");
+		}
+		else {
+			$('#linkInfo').append("<div id = page><a href='" + link + 
+				"'>" + "Last FM Page" + "</a>" + "</div>");
+		}
+		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
 		$('#Tickets').css("background-image","url(" + big + ")");
 		$('#Tickets').css("background-size", "cover");
 		$('#Tickets').css("background-position", "center");
@@ -180,13 +198,42 @@ var name;
 		$('#Tickets').css("-o-background-size", "cover");
 		$('#Tickets').css("-o-background-size", "cover");
 		$('#ticketInfo').empty();
-		$('#ticketInfo').append(band);
+		$('#ticketInfo').append("<div id = bandName>" + band + "</div>");
+		$('#ticketInfo').append(likeButton);
+		likeButton.button();
 		getSong(band);
 		var object = $(this.innerHTML);
 		//setInfo(object,band);
 	});
 
+liked = function(){
+	if ($(".likeButton").val()==="Like") {
+		$(".likeButton").val("Liked!");
+		$(".likeButton").button("refresh");
+	}
+	else {
+		$(".likeButton").val("Like");
+		$(".likeButton").button("refresh");
+	}
 
+	awesome = function() {
+		console.log("we did it!")
+	}
+
+
+	$.ajax({
+    url:"/aaa",
+    data: JSON.stringify({'name':$("#bandName").html()}),
+    type: "POST",
+    success: awesome,
+    contentType: "application/json",
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR.status);
+        console.log(textStatus);
+        console.log(errorThrown);
+    	}
+	})
+}
 
 //Sets the info of the artist in the picture div
 setInfo = function(object,band,container) {
@@ -209,20 +256,21 @@ setInfo = function(object,band,container) {
 				}
 				
 				else {
-				var head = document.createElement("div");
-				var body = document.createElement("div");
-				head.innerHTML = "Bio";
-				head.setAttribute("id", "head");
-				body.setAttribute("id", "body");
-				body.innerHTML = data.artist.bio.content;
-				//$(info).append(head);
-				$(info).append("<br>");
-				$(info).append(body);
-				//$(info).css({"width":"90%","margin-left":"5%","margin-right":"5%"})
-				//}
+					var head = document.createElement("div");
+					var body = document.createElement("div");
+					head.innerHTML = "Bio";
+					head.setAttribute("id", "head");
+					body.setAttribute("id", "body");
+					body.innerHTML = data.artist.bio.content;
+					//$(info).append(head);
+					$(info).append("<br>");
+					$(info).append(body);
+					//$(info).css({"width":"90%","margin-left":"5%","margin-right":"5%"})
+					//}
 
-				$(container).append(info);
-			});	
+					$(container).append(info);
+				}	
+	})
 }
 
 //Executes a Search and calls particle explosion
@@ -245,7 +293,7 @@ getSong = function(name){
 	}
 	$.ajax({
 		url: 'http://hkr.me:8001/?url=' + 
-		encodeURIComponent('http://developer.echonest.com/api/v4/song/search?api_key=N6E4NIOVYMTHNDM8J&format=json&results=5&artist=' + 
+		encodeURIComponent('http://developer.echonest.com/api/v4/song/search?api_key=JGTFZFCZNOZDOWFED&format=json&results=5&artist=' + 
 			name + '&bucket=id:7digital-US&bucket=audio_summary&bucket=tracks') 
 		+ "&jsonp=?",
 		dataType: "json",
@@ -390,7 +438,7 @@ var data1;
 				api_key: "8319d81dde2f49bad5c65a0ce2361a31",
 				format: "json",
 				artist: $("#artistSearch").val(),
-				limit: 250
+				limit: 50
 			},
 
 			function(data) {
