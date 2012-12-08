@@ -94,7 +94,12 @@ bandLike = function(data) {
 
 		$('#bandInfo').html('')
 
-		var likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
+		if (bandExists) {
+			var likeButton = $('<input type="button" value="Liked!" onclick="liked();" class="likeButton" type="button">');
+		}
+		else{
+			var likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton" type="button">');
+		}
 		var big = $(this).attr("data-big");
 		$('#Band').css("background-image","url(" + big + ")");
 		$('#Band').css("background-size", "cover");
@@ -112,7 +117,12 @@ bandLike = function(data) {
 		var object = $(this);
 		setInfo(object,band);
 
-		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
+		if (bandExists) {
+			var likeButton = $('<input type="button" value="Liked!" onclick="liked();" class="likeButton" type="button">');
+		}
+		else{
+			var likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton" type="button">');
+		}
 		$('#Bio').css("background-image","url(" + big + ")");
 		$('#Bio').css("background-size", "cover");
 		$('#Bio').css("background-position", "center");
@@ -127,7 +137,12 @@ bandLike = function(data) {
 		var object = $(this);
 		setInfo(object,band,"#bioInfo");
 
-		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
+		if (bandExists) {
+			var likeButton = $('<input type="button" value="Liked!" onclick="liked();" class="likeButton" type="button">');
+		}
+		else{
+			var likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton" type="button">');
+		}
 		$('#Links').css("background-image","url(" + big + ")");
 		$('#Links').css("background-size", "cover");
 		$('#Links').css("background-position", "center");
@@ -151,7 +166,12 @@ bandLike = function(data) {
 			$('#linkInfo').append("<div id = page><a href='" + link + 
 				"'>" + "Last FM Page" + "</a>" + "</div>");
 		}
-		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
+		if (bandExists) {
+			var likeButton = $('<input type="button" value="Liked!" onclick="liked();" class="likeButton" type="button">');
+		}
+		else{
+			var likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton" type="button">');
+		}
 		$('#Tickets').css("background-image","url(" + big + ")");
 		$('#Tickets').css("background-size", "cover");
 		$('#Tickets').css("background-position", "center");
@@ -424,7 +444,6 @@ getSong = function(name){
 	}
 	name = name.toLowerCase();
 	name = replaceAll(name," ","+");
-	console.log(name);
 	$.ajax({
 		url: 'https://itunes.apple.com/search?term=' + replaceAll(name.toLowerCase(),' ','+'),
 		media: 'music',
@@ -572,7 +591,6 @@ if ($.mobile.activePage.attr("id") == "simArtists"){
 
 var data1;
 if (currentLocation !== "") {
-	console.log("asdasd");
 	$.getJSON('http://ws.audioscrobbler.com/2.0/',
 	{
 		method: "geo.getEvents",
@@ -583,7 +601,6 @@ if (currentLocation !== "") {
 	},
 
 	function(data) {
-		console.log(data);
 		data1 = data;
 		$("#shows").html("");
 		$.each(data1.events.event, function(i, item) {		
@@ -611,7 +628,6 @@ if (currentLocation !== "") {
 
 			var link = document.createElement("div");
 			link.className = "link";
-			console.log(item.image[2]["#text"]);
 			link.innerHTML = "<a id='" + item.name  + "' data-big=" + 
 					item.image[2]["#text"] + " band='" + artist.id + "' link='"
 					 +item.url + "' href='#Band'>" + artist.id + "</div>";
@@ -621,7 +637,7 @@ if (currentLocation !== "") {
 			artist.appendChild(link);
 			$(artist).append(img);
 			artist.innerHTML += "<br>"
-						
+			
 			$("#shows").append(artist)
 					
 				
@@ -787,14 +803,6 @@ var currentArtist;
 							artist.appendChild(link);
 							$(artist).append(img);
 							artist.innerHTML += "<br>"
-
-							var css = document.createElement("div");
-							css.className = "space";
-							artist.appendChild(css);
-							artist.appendChild(link);
-							$(artist).append(img);
-							artist.innerHTML += "<br>"
-						
 							$("#similarLocalArtists").append($(artist))
 						}
 					});
