@@ -1,7 +1,36 @@
 a {
 	font-weight: bold;
 	text-transform: uppercase;
-	color: white;
+	color: white !important;
+	text-decoration: none;
+}
+
+h1.ui-title {
+	width: 100%;
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+}
+
+#simArtists {
+	overflow: auto;
+}
+
+#similarArtists {
+	min-height: 100%;
+}
+
+.ui-header .ui-title, .ui-footer .ui-title {
+	margin: 0px;
+	padding-bottom: 20px;
+}
+
+a:active {
+	color: white !important; 
+}
+
+a:visited {
+	color: white !important;
 }
 
 #linkInfo a:link {
@@ -11,13 +40,13 @@ a {
 #linkInfo #page {
 
 	font-size: 20px;
-	text-decoration: underline;
+	/*text-decoration: underline;*/
 	margin-top: 10%;
 }
 
 .blackBox {
-	background-color: black;
-	opacity: 0.6;
+	background-color: rgba(0,0,0,0.8);
+	color: white;
 	height: 70%;
 	bottom: 0px;
 	width: 96%;
@@ -90,16 +119,19 @@ body{
 }
 
 .content .img{
-	padding-right: 30px;
-	-webkit-border-radius: 40px;
-	border-radius: 5px;
+	/*-webkit-border-radius: 40px;
+	border-radius: 5px;*/
 	float: right;
+	display: inline-block;
+	margin-top: -5px;
+	border-style: solid;
+	border-width: 8px;
+	border-color: black;
 }
 
 .content .img img{
-	-webkit-border-radius: 40px;
-	border-radius: 10px;
 	max-height: 150px;
+	float: right;
 }
 
 
@@ -108,23 +140,31 @@ body{
 	opacity: 1;
 }
 
+.space {
+	margin-bottom:0px;
+	width: 100%;
+	display:inline-block;
+	margin-left: 0px;
+	height: 6px;
+	background-color: black;
+}
 
 
-.link {	
+.link {
+	margin-top: -5px;	
 	position: relative;
 	float: left;
 	color: white;
+	display: inline-block;
 	background-color: black;
-	padding-right: 20px;
-	padding-left: 20px;
-	margin-left: 30px;
-	top: 30px;
+	padding-right: 15px;
+	padding-left: 15px;
 	text-transform: uppercase;
 }
 
 .link:active {
 	position: relative;
-	top: 32px;
+	top: 2px;
 }
 
 img:active {
@@ -194,6 +234,7 @@ img:active {
 	height: 25px;
 	float: right;
 	margin-right: 60px;
+	margin-top: 5px;
 }
 
 .menu { padding: 0; 
@@ -228,6 +269,7 @@ img:active {
 .content { 
 	float: left; 
 	margin-top: 0px;
+	width: 100%;
 }
 
 #picture{
@@ -237,6 +279,10 @@ img:active {
 	margin-top: 0px;
 	background: rgba(0, 0, 0, 0.6);
 }
+
+.header {position:fixed;z-index:10;top:0;width:100%}
+.content {padding:45px 15px}
+.footer {position:fixed;z-index:10;bottom:0;width:100%}
 
 #picture.hidden{
 	visibility:hidden;

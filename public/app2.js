@@ -568,9 +568,11 @@ if ($.mobile.activePage.attr("id") == "simArtists"){
 		else if ($.mobile.activePage.attr("id") == "Shows"){
 			currentLocation = $("#locationSearch2").val();
 		}
+		alert(currentLocation);
 
 var data1;
 if (currentLocation !== "") {
+	console.log("asdasd");
 	$.getJSON('http://ws.audioscrobbler.com/2.0/',
 	{
 		method: "geo.getEvents",
@@ -581,19 +583,19 @@ if (currentLocation !== "") {
 	},
 
 	function(data) {
+		console.log(data);
 		data1 = data;
 		$("#shows").html("");
 		$.each(data1.events.event, function(i, item) {		
 			var artist = document.createElement("div");
 			artist.className = "artist";
 			artist.id = item.artists.artist;
-
 			var img = $("<div>");
 			img.addClass("img");
 			var imgTag = $("<img>");
 			imgTag.attr("src",item.image[2]["#text"]);
 			imgTag.attr("data-big",item.image[2]["#text"]);
-			imgTag.attr("band", item.name);
+			imgTag.attr("band", artist.id);
 			imgTag.attr("link",item.url); 
 			imgTag.attr("city",item.venue.location.city); 
 			imgTag.attr("country",item.venue.location.country);
@@ -609,9 +611,10 @@ if (currentLocation !== "") {
 
 			var link = document.createElement("div");
 			link.className = "link";
+			console.log(item.image[2]["#text"]);
 			link.innerHTML = "<a id='" + item.name  + "' data-big=" + 
-					item.image[4]["#text"] + " band='" + item.name + "' link='"
-					 +item.url + "' href='#Band'>" + item.name + "</div>";
+					item.image[2]["#text"] + " band='" + artist.id + "' link='"
+					 +item.url + "' href='#Band'>" + artist.id + "</div>";
 			var css = document.createElement("div");
 			css.className = "space";
 			artist.appendChild(css);
@@ -711,7 +714,6 @@ var currentArtist;
 	else if ($.mobile.activePage.attr("id") == "Shows"){
 			currentArtist = $("#artistSearch2").val();
 		}
-			console.log(currentArtist);
 			$.getJSON('http://ws.audioscrobbler.com/2.0/',
 			{
 				method: "artist.getSimilar",
@@ -733,7 +735,6 @@ var currentArtist;
 				else if ($.mobile.activePage.attr("id") == "Shows"){
 					currentLocation = $("#locationSearch2").val();
 				}
-				console.log(currentLocation);
 				if (currentLocation !== "") {
 				$.getJSON('http://ws.audioscrobbler.com/2.0/',
 				{
