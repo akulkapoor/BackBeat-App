@@ -59,6 +59,73 @@ text.yVel = 0;
 var name;
 var bandExists;
 
+getLinks=function(band){
+
+var data2;
+
+			$.getJSON('http://developer.echonest.com/api/v4/artist/urls',
+			{
+				api_key: "JGTFZFCZNOZDOWFED",
+				name: band,
+				format: "json"
+			},
+
+			function(data) {
+				data2 = data;
+				console.log(data2);
+				//$("#linkInfo").html("");
+				var linkNames = ["Amazon Music","Last FM","Musicbrainz Page","MySpace","Wikipedia"];
+				var count = 0
+
+
+				$.each(data2.response.urls, function(i, item) {
+				console.log(item[0]);
+
+				var link = $("<a>");
+				link.addClass("echoLink");
+				link.attr("href",item);
+				link.html(linkNames[count]);
+				$("#linkInfo").append(link);
+				count++
+
+					/*
+					var artist = document.createElement("div");
+					artist.className = "artist";
+					artist.id = item.name;
+
+					var img = $("<div>");
+					img.addClass("img");
+					var imgTag = $("<img>");
+					imgTag.attr("src",item.image[2]["#text"]);
+					imgTag.attr("data-big",item.image[4]["#text"]);
+					imgTag.attr("band", item.name);
+					imgTag.attr("link",item.url); 
+					var picLink = $("<a>");
+					picLink.attr("href","#Band");
+					picLink.append(imgTag);
+					img.append(picLink);
+
+
+
+					var link = document.createElement("div");
+					link.className = "link";
+					link.innerHTML = "<a id='" + item.name  + "' data-big=" + 
+					item.image[4]["#text"] + " band='" + item.name + "' link='"
+					 +item.url + "' href='#Band'>" + item.name + "</div>";
+					var css = document.createElement("div");
+					css.className = "space";
+					artist.appendChild(css);
+					artist.appendChild(link);
+					$(artist).append(img);
+					artist.innerHTML += "<br>"
+						
+					$("#similarArtists").append(artist)*/
+					
+				
+			});
+		});
+};
+
 bandLike = function(data) {
 	if(data==="1") {
 		alert("band exists!");
@@ -67,7 +134,7 @@ bandLike = function(data) {
 	else {
 		bandExists = false;
 	}
-}
+};
 
 	var info = document.createElement("div");
 	info.setAttribute("id","info");
@@ -114,7 +181,6 @@ bandLike = function(data) {
 		$('#bioInfo').append(band);
 		$('#bioInfo').append(likeButton);
 		likeButton.button();
-		getSong(band);
 		var object = $(this);
 		setInfo(object,band,"#bioInfo");
 
@@ -130,11 +196,11 @@ bandLike = function(data) {
 		$('#linkInfo').append(band);
 		$('#linkInfo').append(likeButton);
 		likeButton.button();
-		getSong(band);
+		getLinks(band);
 		var object = $(this);
 		//setInfo(object,band);
 
-		var link = $(this).attr("link");
+		/*var link = $(this).attr("link");
 		if (link.slice(0,7) !== "http://") {
 			$('#linkInfo').append("<div id = page><a href='http://" + link + 
 				"'>" + "Last FM Page" + "</a>" + "</div>");
@@ -142,7 +208,7 @@ bandLike = function(data) {
 		else {
 			$('#linkInfo').append("<div id = page><a href='" + link + 
 				"'>" + "Last FM Page" + "</a>" + "</div>");
-		}
+		}*/
 		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
 		$('#Tickets').css("background-image","url(" + big + ")");
 		$('#Tickets').css("background-size", "cover");
@@ -155,7 +221,6 @@ bandLike = function(data) {
 		$('#ticketInfo').append(band);
 		$('#ticketInfo').append(likeButton);
 		likeButton.button();
-		getSong(band);
 		var object = $(this);
 
 
@@ -268,7 +333,6 @@ bandLike = function(data) {
 		$('#bioInfo').append("<div id = bandName>" + band + "</div>");
 		$('#bioInfo').append(likeButton);
 		likeButton.button();
-		getSong(band);
 		var object = $(this.innerHTML);
 		setInfo(object,band,"#bioInfo");
 
@@ -283,10 +347,13 @@ bandLike = function(data) {
 		$('#linkInfo').empty();
 		$('#linkInfo').append("<div id = bandName>" + band + "</div>");
 		$('#linkInfo').append(likeButton);
+		getLinks(band);
 		likeButton.button();
-		getSong(band);
+		
 		var object = $(this.innerHTML);
 		//setInfo(object,band);
+
+		/*
 
 		var link = $(this.innerHTML).attr("link");
 		if (link.slice(0,7) !== "http://") {
@@ -296,7 +363,8 @@ bandLike = function(data) {
 		else {
 			$('#linkInfo').append("<div id = page><a href='" + link + 
 				"'>" + "Last FM Page" + "</a>" + "</div>");
-		}
+		}*/
+
 		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton" type="button">');
 		$('#Tickets').css("background-image","url(" + big + ")");
 		$('#Tickets').css("background-size", "cover");
@@ -309,7 +377,6 @@ bandLike = function(data) {
 		$('#ticketInfo').append("<div id = bandName>" + band + "</div>");
 		$('#ticketInfo').append(likeButton);
 		likeButton.button();
-		getSong(band);
 		var object = $(this.innerHTML);
 		//setInfo(object,band);
 	});
@@ -410,7 +477,7 @@ getSong = function(name){
 
 	});
 
-}
+};
 
 
 //Callback for AJAX
@@ -429,6 +496,11 @@ callBack = function(data) {
 			trackList.push({title:trackName,mp3:preview})
 		}
 	});
+
+
+
+
+
 	
 
 	//Code from jPlayer

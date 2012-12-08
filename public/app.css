@@ -5,8 +5,23 @@ a {
 	text-decoration: none;
 }
 
+#MyBands {
+	background-size: contain;
+	background-image:url("BackBeatIcon.png");
+	background-repeat:no-repeat;
+	background-attachment:fixed;
+	background-position:center; 
+
+}
+
 #linkInfo a:link {
 	font-size: 20px;
+}
+
+.echoLink {
+	color: white;
+	display: block;
+	padding-top: 2%;
 }
 
 #linkInfo #page {
@@ -18,6 +33,7 @@ a {
 
 .blackBox {
 	background-color: black;
+	border-radius: 1em;
 	opacity: 0.6;
 	height: 70%;
 	bottom: 0px;
