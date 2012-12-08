@@ -22,6 +22,7 @@ passport.serializeUser(function(user,done) {
 })
 
 passport.deserializeUser(function(id,done) {
+  console.log(id);
   User.findOne(id, function(err,user) {
     done(err,user)
   });
@@ -34,6 +35,7 @@ passport.use(new FacebookStrategy({
     },
     function(accessToken, refreshToken,profile,done) {
       process.nextTick(function() {
+        console.log(profile.id);
         var query = User.findOne({'fbID': profile.id})
         query.exec(function(err, oldUser) {
           if (oldUser) {
@@ -91,20 +93,22 @@ app.configure('development', function(){
 });
 app.post('/aaa', function (req,res) {
   if (req.user !== undefined) {
+    console.log(req.user);
     console.log(req.body);
     var data = req.body.name;
     if (req.user.bands.indexOf(data) === -1) {
       req.user.bands.push(data);
-      console.log(req.user.bands);
+      console.log(req.user.name, req.user.bands);
       req.user.save();
     }
     else {
       req.user.bands.splice(req.user.bands.indexOf(data),1);
       console.log("removed!")
-      console.log(req.user.bands)
+      console.log(req.user.name,req.user.bands);
+      req.user.save();
     }
-    res.end("success!")
   }
+  res.end()
 })
 
 app.post('/bbb', function (req,res) {
@@ -128,4 +132,5 @@ app.get('/logout',function(req,res) {
     res.redirect('/');
 })
 app.get('/users', user.list);
-app.listen(3000);
+var port = process.env.PORT || 3000;
+app.listen(port);

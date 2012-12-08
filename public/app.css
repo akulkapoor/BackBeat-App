@@ -1,27 +1,36 @@
 a {
 	font-weight: bold;
 	text-transform: uppercase;
-	color: white;
+	color: white !important;
 	text-decoration: none;
 }
 
-#MyBands {
-	background-size: contain;
-	background-image:url("BackBeatIcon.png");
-	background-repeat:no-repeat;
-	background-attachment:fixed;
-	background-position:center; 
+h1.ui-title {
+	width: 100%;
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+}
 
+#simArtists {
+	overflow: auto;
+}
+
+.ui-header .ui-title, .ui-footer .ui-title {
+	margin: 0px;
+	padding-bottom: 20px;
+}
+
+a:active {
+	color: white !important; 
+}
+
+a:visited {
+	color: white !important;
 }
 
 #linkInfo a:link {
 	font-size: 20px;
-}
-
-.echoLink {
-	color: white;
-	display: block;
-	padding-top: 2%;
 }
 
 #linkInfo #page {
@@ -32,9 +41,8 @@ a {
 }
 
 .blackBox {
-	background-color: black;
-	border-radius: 1em;
-	opacity: 0.6;
+	background-color: rgba(0,0,0,0.8);
+	color: white;
 	height: 70%;
 	bottom: 0px;
 	width: 96%;
@@ -222,6 +230,7 @@ img:active {
 	height: 25px;
 	float: right;
 	margin-right: 60px;
+	margin-top: 5px;
 }
 
 .menu { padding: 0; 
@@ -266,6 +275,10 @@ img:active {
 	margin-top: 0px;
 	background: rgba(0, 0, 0, 0.6);
 }
+
+.header {position:fixed;z-index:10;top:0;width:100%}
+.content {padding:45px 15px}
+.footer {position:fixed;z-index:10;bottom:0;width:100%}
 
 #picture.hidden{
 	visibility:hidden;

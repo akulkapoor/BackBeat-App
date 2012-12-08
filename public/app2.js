@@ -59,82 +59,25 @@ text.yVel = 0;
 var name;
 var bandExists;
 
-getLinks=function(band){
 
-var data2;
-
-			$.getJSON('http://developer.echonest.com/api/v4/artist/urls',
-			{
-				api_key: "JGTFZFCZNOZDOWFED",
-				name: band,
-				format: "json"
-			},
-
-			function(data) {
-				data2 = data;
-				console.log(data2);
-				//$("#linkInfo").html("");
-				var linkNames = ["Amazon Music","Last FM","Musicbrainz Page","MySpace","Wikipedia"];
-				var count = 0
-
-
-				$.each(data2.response.urls, function(i, item) {
-				console.log(item[0]);
-
-				var link = $("<a>");
-				link.addClass("echoLink");
-				link.attr("href",item);
-				link.html(linkNames[count]);
-				$("#linkInfo").append(link);
-				count++
-
-					/*
-					var artist = document.createElement("div");
-					artist.className = "artist";
-					artist.id = item.name;
-
-					var img = $("<div>");
-					img.addClass("img");
-					var imgTag = $("<img>");
-					imgTag.attr("src",item.image[2]["#text"]);
-					imgTag.attr("data-big",item.image[4]["#text"]);
-					imgTag.attr("band", item.name);
-					imgTag.attr("link",item.url); 
-					var picLink = $("<a>");
-					picLink.attr("href","#Band");
-					picLink.append(imgTag);
-					img.append(picLink);
-
-
-
-					var link = document.createElement("div");
-					link.className = "link";
-					link.innerHTML = "<a id='" + item.name  + "' data-big=" + 
-					item.image[4]["#text"] + " band='" + item.name + "' link='"
-					 +item.url + "' href='#Band'>" + item.name + "</div>";
-					var css = document.createElement("div");
-					css.className = "space";
-					artist.appendChild(css);
-					artist.appendChild(link);
-					$(artist).append(img);
-					artist.innerHTML += "<br>"
-						
-					$("#similarArtists").append(artist)*/
-					
-				
-			});
-		});
-};
+function replaceAll(Source,stringToFind,stringToReplace){
+  var temp = Source;
+    var index = temp.indexOf(stringToFind);
+        while(index != -1){
+            temp = temp.replace(stringToFind,stringToReplace);
+            index = temp.indexOf(stringToFind);
+        }
+        return temp;
+}
 
 bandLike = function(data) {
 	if(data==="1") {
-		alert("band exists!");
 		bandExists = true;
 	}
 	else {
 		bandExists = false;
 	}
-};
+}
 
 	var info = document.createElement("div");
 	info.setAttribute("id","info");
@@ -196,11 +139,10 @@ bandLike = function(data) {
 		$('#linkInfo').append(band);
 		$('#linkInfo').append(likeButton);
 		likeButton.button();
-		getLinks(band);
 		var object = $(this);
 		//setInfo(object,band);
 
-		/*var link = $(this).attr("link");
+		var link = $(this).attr("link");
 		if (link.slice(0,7) !== "http://") {
 			$('#linkInfo').append("<div id = page><a href='http://" + link + 
 				"'>" + "Last FM Page" + "</a>" + "</div>");
@@ -208,7 +150,7 @@ bandLike = function(data) {
 		else {
 			$('#linkInfo').append("<div id = page><a href='" + link + 
 				"'>" + "Last FM Page" + "</a>" + "</div>");
-		}*/
+		}
 		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton">');
 		$('#Tickets').css("background-image","url(" + big + ")");
 		$('#Tickets').css("background-size", "cover");
@@ -317,11 +259,18 @@ bandLike = function(data) {
 		$('#bandInfo').append("<div id = bandName>" + band + "</div>");
 		$('#bandInfo').append(likeButton);
 		likeButton.button();
-		$('#bandInfo').append(player);
+		 $('#bandInfo').append(player);
 		getSong(band);
 		var object = $(this.innerHTML);
 		setInfo(object,band);
 
+
+		if (bandExists) {
+			var likeButton = $('<input type="button" value="Liked!" onclick="liked();" class="likeButton" type="button">');
+		}
+		else{
+			var likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton" type="button">');
+		}
 		$('#Bio').css("background-image","url(" + big + ")");
 		$('#Bio').css("background-size", "cover");
 		$('#Bio').css("background-position", "center");
@@ -336,7 +285,12 @@ bandLike = function(data) {
 		var object = $(this.innerHTML);
 		setInfo(object,band,"#bioInfo");
 
-		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton" type="button">');
+		if (bandExists) {
+			var likeButton = $('<input type="button" value="Liked!" onclick="liked();" class="likeButton" type="button">');
+		}
+		else{
+			var likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton" type="button">');
+		}
 		$('#Links').css("background-image","url(" + big + ")");
 		$('#Links').css("background-size", "cover");
 		$('#Links').css("background-position", "center");
@@ -347,13 +301,9 @@ bandLike = function(data) {
 		$('#linkInfo').empty();
 		$('#linkInfo').append("<div id = bandName>" + band + "</div>");
 		$('#linkInfo').append(likeButton);
-		getLinks(band);
 		likeButton.button();
-		
 		var object = $(this.innerHTML);
 		//setInfo(object,band);
-
-		/*
 
 		var link = $(this.innerHTML).attr("link");
 		if (link.slice(0,7) !== "http://") {
@@ -363,9 +313,14 @@ bandLike = function(data) {
 		else {
 			$('#linkInfo').append("<div id = page><a href='" + link + 
 				"'>" + "Last FM Page" + "</a>" + "</div>");
-		}*/
+		}
 
-		likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton" type="button">');
+		if (bandExists) {
+			var likeButton = $('<input type="button" value="Liked!" onclick="liked();" class="likeButton" type="button">');
+		}
+		else{
+			var likeButton = $('<input type="button" value="Like" onclick="liked();" class="likeButton" type="button">');
+		}
 		$('#Tickets').css("background-image","url(" + big + ")");
 		$('#Tickets').css("background-size", "cover");
 		$('#Tickets').css("background-position", "center");
@@ -467,7 +422,18 @@ getSong = function(name){
 	if (name.indexOf(",") > 0) {
 		name = name.slice(0,name.indexOf(","));
 	}
+	name = name.toLowerCase();
+	name = replaceAll(name," ","+");
+	console.log(name);
 	$.ajax({
+		url: 'https://itunes.apple.com/search?term=' + replaceAll(name.toLowerCase(),' ','+'),
+		media: 'music',
+		kind: 'song',
+		dataType: "jsonp",
+		entity: "allArtist",
+		success: callBack2
+	});
+	/*$.ajax({
 		url: 'http://hkr.me:8001/?url=' + 
 		encodeURIComponent('http://developer.echonest.com/api/v4/song/search?api_key=JGTFZFCZNOZDOWFED&format=json&results=5&artist=' + 
 			name + '&bucket=id:7digital-US&bucket=audio_summary&bucket=tracks') 
@@ -475,10 +441,59 @@ getSong = function(name){
 		dataType: "json",
 		success: callBack
 
+	});*/
+
+}
+
+
+callBack2 = function(data) {
+	var trackList = []
+	$.each(data.results, function(i, item) {
+		var trackName = item.trackName;
+		if (item.previewUrl != null && trackList.length<5 && trackName != undefined){
+			trackList.push({title:trackName,mp3:item.previewUrl})
+		}
 	});
-
-};
-
+	console.log(trackList);
+	
+	//Code from jPlayer
+	new jPlayerPlaylist({
+		jPlayer: "#jquery_jplayer_1",
+		cssSelectorAncestor: "#jp_container_1"
+		}, trackList, {
+		swfPath: "js",
+ 		solution: 'html, flash',
+		supplied: 'mp3',
+		preload: 'metadata',
+		volume: 0.8,
+		muted: false,
+		backgroundColor: '#000000',
+		cssSelectorAncestor: '#jp_container_1',
+		cssSelector: {
+		videoPlay: '.jp-video-play',
+		play: '.jp-play',
+		pause: '.jp-pause',
+		stop: '.jp-stop',
+		seekBar: '.jp-seek-bar',
+		playBar: '.jp-play-bar',
+		mute: '.jp-mute',
+		unmute: '.jp-unmute',
+		volumeBar: '.jp-volume-bar',
+		volumeBarValue: '.jp-volume-bar-value',
+		volumeMax: '.jp-volume-max',
+		currentTime: '.jp-current-time',
+		duration: '.jp-duration',
+		fullScreen: '.jp-full-screen',
+		restoreScreen: '.jp-restore-screen',
+		repeat: '.jp-repeat',
+		repeatOff: '.jp-repeat-off',
+		gui: '.jp-gui',
+		noSolution: '.jp-no-solution'
+		},
+		errorAlerts: false,
+		warningAlerts: false
+		});
+}
 
 //Callback for AJAX
 callBack = function(data) {
@@ -496,11 +511,6 @@ callBack = function(data) {
 			trackList.push({title:trackName,mp3:preview})
 		}
 	});
-
-
-
-
-
 	
 
 	//Code from jPlayer
@@ -547,15 +557,26 @@ callBack = function(data) {
 
 //Display Upcoming Shows - Last.fm API
 allShows=function(){
+var currentLocation;
+
+if ($.mobile.activePage.attr("id") == "simArtists"){
+			currentLocation = $("#locationSearch").val();
+		}
+		else if ($.mobile.activePage.attr("id") == "simLocArtists"){
+			currentLocation = $("#locationSearch1").val();
+		}
+		else if ($.mobile.activePage.attr("id") == "Shows"){
+			currentLocation = $("#locationSearch2").val();
+		}
 
 var data1;
-if ($("#locationSearch").val() !== "") {
+if (currentLocation !== "") {
 	$.getJSON('http://ws.audioscrobbler.com/2.0/',
 	{
 		method: "geo.getEvents",
 		api_key: "8319d81dde2f49bad5c65a0ce2361a31",
 		format: "json",
-		location: $("#locationSearch").val(),
+		location: currentLocation,
 		limit: 50
 	},
 
@@ -588,22 +609,9 @@ if ($("#locationSearch").val() !== "") {
 
 			var link = document.createElement("div");
 			link.className = "link";
-			if (item.url.slice(0,7) !== "http://") {
-				link.innerHTML = "<a href='" + "http://" + item.url + 
-				"'>" + item.artists.artist + "</a>";
-							
-			}
-			else {
-				link.innerHTML = "<a href='" + item.url + "'>" + 
-				item.artists.artist + "</a>";
-			}
-			link.innerHTML = "<div id='" + item.artists.artist  + 
-			"' data-big=" + item.image[2]["#text"] + " band='" + 
-			item.artists.artist + "' city='" + item.venue.location.city + 
-			"'" + " country='" + item.venue.location.country + "'" + 
-			" theatre='" + item.venue.name+ "' link='" + item.url + 
-			"' date='" + item.startDate + "'>" + item.artists.artist 
-			+ "</div>";
+			link.innerHTML = "<a id='" + item.name  + "' data-big=" + 
+					item.image[4]["#text"] + " band='" + item.name + "' link='"
+					 +item.url + "' href='#Band'>" + item.name + "</div>";
 			var css = document.createElement("div");
 			css.className = "space";
 			artist.appendChild(css);
@@ -623,13 +631,23 @@ if ($("#locationSearch").val() !== "") {
 simArts=function(){
 
 var data1;
+var currentArtist;
+		if ($.mobile.activePage.attr("id") == "simArtists"){
+			currentArtist = $("#artistSearch").val();
+		}
+		else if ($.mobile.activePage.attr("id") == "simLocArtists"){
+			currentArtist = $("#artistSearch1").val();
+		}
+		else if ($.mobile.activePage.attr("id") == "Shows"){
+			currentArtist = $("#artistSearch2").val();
+		}
 
 			$.getJSON('http://ws.audioscrobbler.com/2.0/',
 			{
 				method: "artist.getSimilar",
 				api_key: "8319d81dde2f49bad5c65a0ce2361a31",
 				format: "json",
-				artist: $("#artistSearch").val(),
+				artist: currentArtist,
 				limit: 50
 			},
 
@@ -675,31 +693,54 @@ var data1;
 					
 				
 			});
+			$("#similarArtists").css('height','100%')
 		});
 }
 
 //Populates similar artists and cross-references by location - Last FM API
 simLocArts=function(){
-if ($("#locationSearch").val() !== "") {
 var data1;
 var data2;
+var currentArtist;
+	if ($.mobile.activePage.attr("id") == "simArtists"){
+			currentArtist = $("#artistSearch").val();
+		}
+	else if ($.mobile.activePage.attr("id") == "simLocArtists"){
+			currentArtist = $("#artistSearch1").val();
+		}
+	else if ($.mobile.activePage.attr("id") == "Shows"){
+			currentArtist = $("#artistSearch2").val();
+		}
+			console.log(currentArtist);
 			$.getJSON('http://ws.audioscrobbler.com/2.0/',
 			{
 				method: "artist.getSimilar",
 				api_key: "8319d81dde2f49bad5c65a0ce2361a31",
 				format: "json",
-				artist: $("#artistSearch").val(),
+				artist: currentArtist,
 				limit: 250
 			},
 
 			function(data) {
 				data1 = data;
+				var currentLocation;
+				if ($.mobile.activePage.attr("id") == "simArtists"){
+					currentLocation = $("#locationSearch").val();
+				}
+				else if ($.mobile.activePage.attr("id") == "simLocArtists"){
+					currentLocation = $("#locationSearch1").val();
+				}
+				else if ($.mobile.activePage.attr("id") == "Shows"){
+					currentLocation = $("#locationSearch2").val();
+				}
+				console.log(currentLocation);
+				if (currentLocation !== "") {
 				$.getJSON('http://ws.audioscrobbler.com/2.0/',
 				{
 					method: "tag.getTopArtists",
 					api_key: "8319d81dde2f49bad5c65a0ce2361a31",
 					format: "json",
-					tag: $("#locationSearch").val(),
+					tag: currentLocation,
 					limit: 9000
 				},
 
@@ -714,48 +755,52 @@ var data2;
 
 
 
-				$.each(data1.similarartists.artist, function(i, item) {
+					$.each(data1.similarartists.artist, function(i, item) {
 				
-					if ($.inArray(item.name,names) !== -1) {
-						var artist = document.createElement("div");
-						artist.className = "artist";
-						artist.id = item.name;
+						if ($.inArray(item.name,names) !== -1) {
+							var artist = document.createElement("div");
+							artist.className = "artist";
+							artist.id = item.name;
 
-					var img = $("<div>");
-					img.addClass("img");
-					var imgTag = $("<img>");
-					imgTag.attr("src",item.image[2]["#text"]);
-					imgTag.attr("data-big",item.image[4]["#text"]);
-					imgTag.attr("band", item.name);
-					imgTag.attr("link",item.url); 
-					var picLink = $("<a>");
-					picLink.attr("href","#Band");
-					picLink.append(imgTag);
-					img.append(picLink);
+							var img = $("<div>");
+							img.addClass("img");
+							var imgTag = $("<img>");
+							imgTag.attr("src",item.image[2]["#text"]);
+							imgTag.attr("data-big",item.image[4]["#text"]);
+							imgTag.attr("band", item.name);
+							imgTag.attr("link",item.url); 
+							var picLink = $("<a>");
+							picLink.attr("href","#Band");
+							picLink.append(imgTag);
+							img.append(picLink);
 
 
-						var link = document.createElement("div");
-						link.className = "link";
-						link.innerHTML = link.innerHTML = "<div id='" + 
-						item.name  + "' data-big=" + item.image[4]["#text"] + 
-						" band='" + item.name + "' link='" +item.url + "'>" + 
-						item.name + "</div>";
+							var link = document.createElement("div");
+							link.className = "link";
+							link.innerHTML = "<a id='" + item.name  + "' data-big=" + 
+							item.image[4]["#text"] + " band='" + item.name + "' link='"
+					 		+item.url + "' href='#Band'>" + item.name + "</div>";
+							var css = document.createElement("div");
+							css.className = "space";
+							artist.appendChild(css);
+							artist.appendChild(link);
+							$(artist).append(img);
+							artist.innerHTML += "<br>"
 
-						var css = document.createElement("div");
-						css.className = "space";
-						artist.appendChild(css);
-						artist.appendChild(link);
-						$(artist).append(img);
-						artist.innerHTML += "<br>"
+							var css = document.createElement("div");
+							css.className = "space";
+							artist.appendChild(css);
+							artist.appendChild(link);
+							$(artist).append(img);
+							artist.innerHTML += "<br>"
 						
-						$("#similarLocalArtists").append($(artist))
-					}
-				});
-			});
-		});
-	}
+							$("#similarLocalArtists").append($(artist))
+						}
+					});
+				})
+			}
+		})
 }
-
 
 
 
